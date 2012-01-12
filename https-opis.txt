@@ -1,0 +1,111 @@
+moja.domena.pl.localhost
+
+http://moja.domena.pl.localhost
+https://admin.moja.domena.pl.localhost:443
+
+
+
+
+1. C:\Windows\System32\drivers\etc
+
+2. httpd.conf: host virtualny
+
+3. Generujemy pliki (polecenia wydać w folderze C:\xampp\apache\bin
+
+        openssl genrsa > moja.domena.pl.localhost.key
+        openssl req -new -x509 -sha1 -days 365 -config C:\xampp\php\extras\openssl\openssl.cnf -key moja.domena.pl.localhost.key > moja.domena.pl.localhost.crt
+
+
+        Uwaga:  Common Name: admin.moja.domena.pl.localhost
+
+4. Zmiany w pliku C:\xampp\apache\conf\extra\httpd-ssl.conf
+
+
+----------------
+
+Listen 443
+
+----------------
+
+
+<VirtualHost admin.moja.domena.pl.localhost:443>
+    DocumentRoot "C:/xampp/htdocs/https-cw/w/web"
+    ServerName moja.domena.pl.localhost
+
+    <IfModule log_config_module>
+        CustomLog "logs/access.log" combined
+    </IfModule>
+    SSLEngine on
+    SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+    SSLCertificateFile "conf/ssl.crt/moja.domena.pl.localhost.crt"
+    SSLCertificateKeyFile "conf/ssl.key/moja.domena.pl.localhost.key"
+    <FilesMatch "\.(cgi|shtml|pl|asp|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory "C:/xampp/cgi-bin">
+        SSLOptions +StdEnvVars
+    </Directory>
+    BrowserMatch ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+    CustomLog "logs/ssl_request.log" "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+</VirtualHost>
+
+
+
+=============================================================================================================================
+
+
+
+next.pl.localhost
+
+http://next.pl.localhost
+https://admin.next.pl.localhost:4434
+
+
+
+
+1. C:\Windows\System32\drivers\etc
+
+2. httpd.conf: host virtualny
+
+3. Generujemy pliki (polecenia wydać w folderze C:\xampp\apache\bin
+
+        openssl genrsa > next.pl.localhost.key
+        openssl req -new -x509 -sha1 -days 365 -config C:\xampp\php\extras\openssl\openssl.cnf -key next.pl.localhost.key > next.pl.localhost.crt
+
+
+        Uwaga:  Common Name: admin.next.pl.localhost
+
+4. Zmiany w pliku C:\xampp\apache\conf\extra\httpd-ssl.conf
+
+
+----------------
+
+Listen 4434
+
+----------------
+
+
+<VirtualHost admin.next.pl.localhost:4434>
+    DocumentRoot "C:/xampp/htdocs/https-cw/next/web"
+    ServerName next.pl.localhost
+
+    <IfModule log_config_module>
+        CustomLog "logs/access.log" combined
+    </IfModule>
+    SSLEngine on
+    SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+    SSLCertificateFile "conf/ssl.crt/next.pl.localhost.crt"
+    SSLCertificateKeyFile "conf/ssl.key/next.pl.localhost.key"
+    <FilesMatch "\.(cgi|shtml|pl|asp|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory "C:/xampp/cgi-bin">
+        SSLOptions +StdEnvVars
+    </Directory>
+    BrowserMatch ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+    CustomLog "logs/ssl_request.log" "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+</VirtualHost>
+
+
+
+=============================================================================================================================
